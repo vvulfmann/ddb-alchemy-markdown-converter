@@ -1,7 +1,16 @@
 import re
+import sys
+
+# Check if the script was run with a command line argument
+if len(sys.argv) != 2:
+    print("Usage: python test.py <filename>")
+    sys.exit(1)
+
+# Get the filename from the command line arguments
+filename = sys.argv[1]
 
 # Open the file in read mode and read its content
-with open('test.md', 'r') as file:
+with open(filename, 'r') as file:
     content = file.read()
 
 # Use a regular expression to remove the URLs in links, keeping the link text
@@ -38,5 +47,5 @@ for heading in headings:
         content = content.replace(heading, new_heading)
 
 # Open the file in write mode and overwrite it with the updated content
-with open('test.md', 'w') as file:
+with open(filename, 'w') as file:
     file.write(content)
