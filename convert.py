@@ -14,13 +14,10 @@ with open(filename, 'r') as file:
     content = file.read()
 
 # Use a regular expression to remove the URLs in links, keeping the link text
-content = re.sub(r'\[(.*?)\]\(.*?\)', r'\1', content)
+content = re.sub(r'\[(.*?)]\(.*?\)', r'\1', content)
 
 # Remove images
-content = re.sub(r'!\[.*?\]\(.*?\)', '', content)
-
-# Remove hanging exclamation points
-content = re.sub(r'!\s', '', content)
+content = re.sub(r'!\[.*?]\(.*?\)', '', content)
 
 # Replace NBSP characters with normal space characters
 content = content.replace('\xa0', ' ')
