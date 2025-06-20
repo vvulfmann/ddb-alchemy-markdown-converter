@@ -22,26 +22,14 @@ content = re.sub(r'!\[.*?]\(.*?\)', '', content)
 # Replace NBSP characters with normal space characters
 content = content.replace('\xa0', ' ')
 
-# Replace any text followed by a horizontal line with that text as an H1 header
-content = re.sub(r'(.*\n)-{2,}\n', r'# \1\n', content)
+# Replace headers with equals sign underlines with H1 headers
+content = re.sub(r'(.*)\n=+\n', r'# \1\n', content)
 
-# Remove all markdown backslashes
+# Replace any text followed by a horizontal line with that text as an H2 header
+content = re.sub(r'(.*\n)-{2,}\n', r'## \1\n', content)
+
+# Remove all backslashes
 content = re.sub(r'\\', '', content)
-
-# Find all the headers in the markdown file
-headings = re.findall(r'\n(#+ .*)', content)
-
-for heading in headings:
-    # Determine the current size of the heading
-    size = heading.count('#')
-
-    # If the heading size is not already 1 (which is the largest size)
-    if size > 1:
-        # Decrease the size by 1
-        new_heading = heading.replace('#', '', 1)
-
-        # Replace the original heading with the new heading in the content
-        content = content.replace(heading, new_heading)
 
 # Remove unnecessary newlines between markdown headers and the subsequent text
 content = re.sub(r'(^|[^\n])(#+ .*)\n\n+', r'\1\2\n', content)
