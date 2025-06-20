@@ -53,6 +53,20 @@ content = re.sub(r'(.*\n[=\-]+\n)\n+', r'\1', content)
 # Replace multiple consecutive newlines with a single newline
 content = re.sub(r'\n{3,}', '\n\n', content)
 
+# Process bullet points multiple times to catch all cases
+for _ in range(3):  # Run multiple passes to catch nested cases
+    # Remove unnecessary newlines between markdown bullet points (*, -, +)
+    content = re.sub(r'([*\-+] .*)\n\n+([*\-+] )', r'\1\n\2', content)
+
+    # Remove unnecessary newlines between markdown numbered bullet points (1., 1), etc.)
+    content = re.sub(r'(\d+[.)] .*)\n\n+(\d+[.)] )', r'\1\n\2', content)
+
+    # Remove unnecessary newlines between mixed bullet points (regular followed by numbered)
+    content = re.sub(r'([*\-+] .*)\n\n+(\d+[.)] )', r'\1\n\2', content)
+
+    # Remove unnecessary newlines between mixed bullet points (numbered followed by regular)
+    content = re.sub(r'(\d+[.)] .*)\n\n+([*\-+] )', r'\1\n\2', content)
+
 # Open the file in write mode and overwrite it with the updated content
 with open(filename, 'w') as file:
     file.write(content)
